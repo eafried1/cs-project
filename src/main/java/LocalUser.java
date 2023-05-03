@@ -1,8 +1,14 @@
+import java.util.HashMap;
 import java.util.HashSet;
 
 public class LocalUser {
 	private Graph<String> network = new Graph<String>();
 	private ActorData data;
+	private HashMap<String, ActorData> networkdata = new HashMap<String, ActorData>();
+	
+	private ActorData getNodeData(String IP) {
+		
+	}
 		
 	public LocalUser(String IP, String type) {
 		type = type.toUpperCase();

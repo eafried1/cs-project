@@ -53,4 +53,9 @@ public class ActorData {
 	public void removeInput(String produce, Integer ammount) {
 		consumption.remove(produce,ammount);
 	}
+	
+	@Override
+	public int hashCode() {
+		return IP.hashCode();
+	}
 }
