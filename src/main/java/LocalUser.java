@@ -5,12 +5,13 @@ public class LocalUser {
 	private Graph<String> network = new Graph<String>();
 	private ActorData data;
 	private HashMap<String, ActorData> networkdata = new HashMap<String, ActorData>();
+	Internetwork net;
 	
 	private ActorData getNodeData(String IP) {
-		
+		return net.query(IP);
 	}
 		
-	public LocalUser(String IP, String type) {
+	public LocalUser(String IP, String type, Internetwork net) {
 		type = type.toUpperCase();
 		if(!type.equals("PRODUCER") && !type.equals("SUPPLIER") && !type.equals("CONSUMER")) {
 			throw new IllegalArgumentException("actor type not recognized. Please enter one of: PRODUCER, SUPPLIER, CONSUMER");
@@ -24,6 +25,7 @@ public class LocalUser {
 		if(type.equals("CONSUMER")) {
 			data = new ActorData(ActorData.kind.CONSUMER, IP);
 		}		
+		this.net = net;
 	}
 
 	public void addNeighbor(String nieghbor) {
