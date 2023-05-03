@@ -1,4 +1,6 @@
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 public class Graph<E> {
 	HashSet<node<E>> nodes;
@@ -15,6 +17,25 @@ public class Graph<E> {
 	
 	public void addnode(E a) {
 		nodes.add(new node<E>(a));
+	}
+	
+	public HashSet<E>getAllConnectedTo(E a) {
+		node<E> node = null;
+		for(node<E> ex : nodes) {
+			if(ex.datum.equals(a)) {
+				node = ex;
+			}
+		}
+		if(node == null) {
+			throw new NoSuchElementException();
+		}
+		HashSet<E> output = new HashSet<E>();
+		for(edge<node<E>> edge : edges) {
+			if(edge.contains(new node<E>(a))) {
+				output.add(edge.getother(node).datum);
+			}
+		}
+		return output;
 	}
 	
 	//creates a complete graph K_n; TODO: update for more kinds of graphs.
@@ -36,7 +57,6 @@ public class Graph<E> {
 	private class node<T>{
 		public T datum;
 		public node() {
-			
 		}
 		public node(T datum) {
 			this.datum = datum;
@@ -45,6 +65,19 @@ public class Graph<E> {
 	
 	private class edge<T>{
 		private final HashSet<T> set;
+		
+		public boolean contains(T a) {
+			return set.contains(a);
+		}
+		
+		public T getother(T a) {
+			Iterator<T> iter = set.iterator();
+			T t = iter.next();
+			if(t.equals(a)) {
+				return iter.next();
+			}
+			return t;
+		}
 		
 		public edge(T a, T b){
 			set = new HashSet<T>();
