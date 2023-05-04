@@ -15,8 +15,29 @@ public class Graph<E> {
 		edges.add(new edge<E>(a, b));
 	}
 	
+	public void disconnect(E a, E b) {
+		for(edge<E> edge : edges) {
+			if(edge.matches(a, b)) {
+				edges.remove(edge);
+			}
+		}
+	}
+	
 	public void addnode(E a) {
+		for(E node : nodes) {
+			if(node.equals(a)) {
+				return;
+			}
+		}
 		nodes.add(a);
+	}
+	
+	public void removenode(E a) {
+		for(E node : nodes) {
+			if(node.equals(a)) {
+				nodes.remove(node);
+			}
+		}
 	}
 	
 	public HashSet<E>getAllConnectedTo(E a) {
@@ -59,6 +80,15 @@ public class Graph<E> {
 			set = new HashSet<T>();
 			set.add(a);
 			set.add(b);
+		}
+		
+		public boolean matches(T a, T b) {
+			for(T obj : set) {
+				if(!obj.equals(a) && !obj.equals(b)) {
+					return false;
+				}
+			}
+			return true;
 		}
 		
 		@Override

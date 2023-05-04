@@ -8,7 +8,9 @@ public class LocalUser {
 	Internetwork net;
 	
 	private ActorData getNodeData(String IP) {
-		return net.query(IP);
+		ActorData pingdata =  net.query(IP);
+		networkdata.put(IP, pingdata);
+		return pingdata;
 	}
 		
 	public LocalUser(String IP, String type, Internetwork net) {
@@ -26,22 +28,30 @@ public class LocalUser {
 			data = new ActorData(ActorData.kind.CONSUMER, IP);
 		}		
 		this.net = net;
+		network.addnode(IP);
 	}
 
 	public void addNeighbor(String nieghbor) {
 		data.addNeighbor(nieghbor);
+		network.addnode(nieghbor);
+		network.connect(data.IP, nieghbor);
 	}
 	
 	public void addNeighbors(HashSet<String> phonebook) {
-		data.addNeighbors(phonebook);
+		for(String str : phonebook) {
+			this.addNeighbor(str);
+		}
 	}
 	
-	public void removeNeighbor(String neihbor) {
-		data.removeNeighbor(neihbor);
+	public void removeNeighbor(String neighbor) {
+		data.removeNeighbor(neighbor);
+		network.disconnect(data.IP, neighbor);
 	}
 	
 	public void removeNeighbors(HashSet<String> phonebook) {
-		data.removeNeighbors(phonebook);
+		for(String str : phonebook) {
+			this.removeNeighbor(str);
+		}
 	}
 	
 	public void addProduce(String produce, Integer ammount) {

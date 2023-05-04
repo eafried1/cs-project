@@ -26,16 +26,8 @@ public class ActorData {
 		this.Neighbors.add(nieghbor);
 	}
 	
-	public void addNeighbors(HashSet<String> phonebook) {
-		this.Neighbors.addAll(phonebook);
-	}
-	
-	public void removeNeighbor(String neihbor) {
-		this.Neighbors.remove(neihbor);
-	}
-	
-	public void removeNeighbors(HashSet<String> phonebook) {
-		this.Neighbors.removeAll(phonebook);
+	public void removeNeighbor(String neighbor) {
+		this.Neighbors.remove(neighbor);
 	}
 	
 	public void addProduce(String produce, Integer ammount) {
