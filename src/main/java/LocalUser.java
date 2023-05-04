@@ -1,5 +1,6 @@
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Stack;
 
 public class LocalUser {
 	private Graph<String> network = new Graph<String>();
@@ -12,6 +13,38 @@ public class LocalUser {
 		networkdata.put(IP, pingdata);
 		return pingdata;
 	}
+	
+	//gets every single actor on the network. Can take very long for large networks
+	public void floodNetworkFrom() {
+		HashSet<String> visited = new HashSet<String>();
+		Stack<String> checklist = new Stack<String>();
+		String node = data.IP;
+		network.addnode(node);
+		do {
+			HashSet<String> neighbors = retrieve(node).Neighbors;
+			for(String str : neighbors) {
+				network.addnode(str);
+				if(!(visited.contains(str))){
+					network.connect(str, node);
+					checklist.push(str);
+				}
+			}
+			visited.add(node);
+			//getNodeData(node); unsure if I need this
+			node = checklist.pop();
+		} while(checklist.size() > 0);
+	}
+	
+	private ActorData retrieve(String IP) {
+		if(networkdata.containsKey(IP)) {
+			return networkdata.get(IP);
+		} else {
+			return getNodeData(IP);
+		}
+	}
+	
+	
+	
 		
 	public LocalUser(String IP, String type, Internetwork net) {
 		type = type.toUpperCase();
@@ -28,6 +61,7 @@ public class LocalUser {
 			data = new ActorData(ActorData.kind.CONSUMER, IP);
 		}		
 		this.net = net;
+		this.networkdata.put(IP, data);
 		network.addnode(IP);
 	}
 
