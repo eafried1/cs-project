@@ -75,6 +75,27 @@ public class LocalUser {
 		} while(checklist.size() > 0);
 	}
 	
+	public void floodWithLimitfrom(String IP, int n) throws InterruptedException {
+		HashSet<String> visited = new HashSet<String>();
+		LinkedBlockingQueue<limitqueue> checklist = new LinkedBlockingQueue<limitqueue>();
+		String node = IP;
+		network.addnode(node);
+		checklist.put(new limitqueue(node,0));
+		do {
+			limitqueue shiny = checklist.poll();
+			if(shiny.depth > n) break;
+			HashSet<String> neighbors = retrieve(shiny.str).Neighbors;
+			for(String str : neighbors) {
+				network.addnode(str);
+				if(!(visited.contains(str))){
+					network.connect(str, shiny.str);
+					checklist.put(new limitqueue(str,shiny.depth+1));
+				}
+			}
+			visited.add(node);
+		} while(checklist.size() > 0);
+	}
+	
 	
 	private ActorData retrieve(String IP) {
 		if(networkdata.containsKey(IP)) {
