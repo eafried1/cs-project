@@ -14,6 +14,14 @@ public class LocalUser {
 		return pingdata;
 	}
 	
+	public Graph<String> getNetwork() {
+		return this.network;
+	}
+	
+	public ActorData getData() {
+		return this.data;
+	}
+	
 	//gets every single actor on the network. Can take very long for large networks
 	public void floodNetwork() {
 		HashSet<String> visited = new HashSet<String>();
@@ -42,9 +50,6 @@ public class LocalUser {
 			return getNodeData(IP);
 		}
 	}
-	
-	
-	
 		
 	public LocalUser(String IP, String type, Internetwork net) {
 		type = type.toUpperCase();

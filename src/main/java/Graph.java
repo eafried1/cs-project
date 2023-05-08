@@ -15,6 +15,10 @@ public class Graph<E> {
 		edges.add(new edge<E>(a, b));
 	}
 	
+	public HashSet<E> getNodes(){
+		return nodes;
+	}
+	
 	public void disconnect(E a, E b) {
 		for(edge<E> edge : edges) {
 			if(edge.matches(a, b)) {
@@ -33,11 +37,23 @@ public class Graph<E> {
 	}
 	
 	public void removenode(E a) {
+		E x = null;
 		for(E node : nodes) {
 			if(node.equals(a)) {
-				nodes.remove(node);
+				x = node;
 			}
 		}
+		if(x == null) {
+			return;
+		}
+		HashSet<edge<E>> marked = new HashSet<edge<E>>();
+		for(edge<E> ege : edges) {
+			if(ege.contains(a)) {
+				marked.add(ege);
+			}
+		}
+		edges.removeAll(marked);
+		nodes.remove(x);
 	}
 	
 	public HashSet<E>getAllConnectedTo(E a) {
