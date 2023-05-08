@@ -1,12 +1,23 @@
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Queue;
 import java.util.Stack;
+import java.util.concurrent.LinkedBlockingQueue;
 
 public class LocalUser {
 	private Graph<String> network = new Graph<String>();
 	private ActorData data;
 	private HashMap<String, ActorData> networkdata = new HashMap<String, ActorData>();
 	Internetwork net;
+	
+	private class limitqueue{
+		String str;
+		int depth;
+		public limitqueue(String s, int i) {
+			str = s;
+			depth = i;
+		}
+	}
 	
 	private ActorData getNodeData(String IP) {
 		ActorData pingdata =  net.query(IP);
@@ -42,6 +53,28 @@ public class LocalUser {
 			node = checklist.pop();
 		} while(checklist.size() > 0);
 	}
+	
+	public void floodWithLimit(int n) throws InterruptedException {
+		HashSet<String> visited = new HashSet<String>();
+		LinkedBlockingQueue<limitqueue> checklist = new LinkedBlockingQueue<limitqueue>();
+		String node = data.IP;
+		network.addnode(node);
+		checklist.put(new limitqueue(node,0));
+		do {
+			limitqueue shiny = checklist.poll();
+			if(shiny.depth > n) break;
+			HashSet<String> neighbors = retrieve(shiny.str).Neighbors;
+			for(String str : neighbors) {
+				network.addnode(str);
+				if(!(visited.contains(str))){
+					network.connect(str, shiny.str);
+					checklist.put(new limitqueue(str,shiny.depth+1));
+				}
+			}
+			visited.add(node);
+		} while(checklist.size() > 0);
+	}
+	
 	
 	private ActorData retrieve(String IP) {
 		if(networkdata.containsKey(IP)) {
