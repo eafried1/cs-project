@@ -15,7 +15,7 @@ public class LocalUser {
 	}
 	
 	//gets every single actor on the network. Can take very long for large networks
-	public void floodNetworkFrom() {
+	public void floodNetwork() {
 		HashSet<String> visited = new HashSet<String>();
 		Stack<String> checklist = new Stack<String>();
 		String node = data.IP;

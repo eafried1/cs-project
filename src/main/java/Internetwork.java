@@ -1,7 +1,8 @@
 import java.util.HashMap;
+
 import java.util.NoSuchElementException;
 
-public class Internetwork {
+public class Internetwork extends Network{
 	private HashMap<String, ActorData> network;
 	public ActorData query(String IP) {
 		if(!network.containsKey(IP)) {
